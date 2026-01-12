@@ -25,9 +25,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Podman
-        uses: containers/podman-action@v1
-        with:
-          podman-version: latest
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y podman
+          podman --version
+          # Configure Podman to work in CI environment
+          sudo mkdir -p /etc/containers
+          echo -e "[registries.search]\nregistries = ['docker.io', 'quay.io', 'ghcr.io']" | sudo tee /etc/containers/registries.conf
 
       - name: Extract metadata (tags, labels) for container
         id: meta
