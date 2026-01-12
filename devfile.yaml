@@ -65,6 +65,11 @@ commands:
       workingDir: /projects/devfile-gui-wizard
       group:
         kind: run
+  - id: deploy
+    exec:
+      component: nodejs-dev
+      commandLine: kubectl apply -k openshift
+      workingDir: ${PROJECT_SOURCE}
 events:
   postStart:
     - install-dependencies
