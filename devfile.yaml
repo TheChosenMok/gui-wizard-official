@@ -14,17 +14,10 @@ metadata:
     - tailwind
     - yaml-generator
   website: https://devfile.io
-projects:
-  - name: devfile-gui-wizard
-    git:
-      remotes:
-        origin: https://github.com/devfile/devfile-gui-wizard.git
-      checkoutFrom:
-        revision: main
 components:
   - name: nodejs-dev
     container:
-      image: docker.io/library/node:18-alpine
+      image: quay.io/devfile/universal-developer-image:ubi10-latest
       mountSources: true
       sourceMapping: /projects
       endpoints:
