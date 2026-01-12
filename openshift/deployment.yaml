@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: devfile-gui-wizard
-        image: ghcr.io/REPLACE_WITH_YOUR_USERNAME/devfile-gui-wizard:latest
+        image: ghcr.io/ibuziuk/devfile-gui-wizard:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80

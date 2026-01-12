@@ -15,8 +15,8 @@ commonLabels:
   app.kubernetes.io/part-of: devfile-gui-wizard
 
 images:
-  - name: ghcr.io/REPLACE_WITH_YOUR_USERNAME/devfile-gui-wizard
-    newName: ghcr.io/REPLACE_WITH_YOUR_USERNAME/devfile-gui-wizard
+  - name: ghcr.io/ibuziuk/devfile-gui-wizard
+    newName: ghcr.io/ibuziuk/devfile-gui-wizard
     newTag: latest
 
 replicas:

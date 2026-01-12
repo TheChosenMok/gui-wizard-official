@@ -73,6 +73,96 @@ The Devfile GUI Wizard simplifies the process of creating devfile YAML configura
 | `npm run build` | Build for production |
 | `npm run preview` | Preview production build locally |
 
+## OpenShift Deployment
+
+The application can be deployed to OpenShift using Kustomize. The deployment manifests are located in the `openshift/` directory.
+
+### Prerequisites
+
+- OpenShift CLI (`oc`) or Kubernetes CLI (`kubectl`) installed
+- Access to an OpenShift cluster
+- Container image built and pushed to a registry (automatically built via GitHub Actions)
+
+### Quick Deploy
+
+1. **Set your namespace** (optional):
+   ```bash
+   oc project your-project-name
+   # or create a new project
+   oc new-project devfile-gui-wizard
+   ```
+
+2. **Deploy using Kustomize**:
+   ```bash
+   kubectl apply -k openshift
+   ```
+   
+   Or with `oc`:
+   ```bash
+   oc apply -k openshift
+   ```
+
+3. **Get the application URL**:
+   ```bash
+   oc get route devfile-gui-wizard -o jsonpath='{.spec.host}'
+   ```
+
+### Verify Deployment
+
+```bash
+# Check deployment status
+kubectl get deployment devfile-gui-wizard
+
+# Check pods
+kubectl get pods -l app=devfile-gui-wizard
+
+# Check service
+kubectl get service devfile-gui-wizard
+
+# Check route (OpenShift)
+oc get route devfile-gui-wizard
+```
+
+### Customization
+
+The deployment uses the image `ghcr.io/ibuziuk/devfile-gui-wizard:latest` by default. To customize:
+
+1. **Update image tag**: Edit `openshift/kustomization.yaml`:
+   ```yaml
+   images:
+     - name: ghcr.io/ibuziuk/devfile-gui-wizard
+       newName: ghcr.io/ibuziuk/devfile-gui-wizard
+       newTag: v1.0.0  # or specific commit hash
+   ```
+
+2. **Adjust replica count**: Edit `openshift/kustomization.yaml`:
+   ```yaml
+   replicas:
+     - name: devfile-gui-wizard
+       count: 3
+   ```
+
+3. **Set namespace**: Edit `openshift/kustomization.yaml`:
+   ```yaml
+   namespace: my-project
+   ```
+
+### Preview Changes
+
+Before applying, preview what will be deployed:
+
+```bash
+kubectl kustomize openshift
+```
+
+### Cleanup
+
+To remove all resources:
+
+```bash
+kubectl delete -k openshift
+```
+
 ## Technology Stack
 
 - **Frontend Framework:** React 18.3.1
