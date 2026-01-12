@@ -26,8 +26,24 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80
-EXPOSE 80
+# Create nginx cache directories and set permissions for non-root user
+RUN mkdir -p /var/cache/nginx/client_temp \
+    && mkdir -p /var/cache/nginx/proxy_temp \
+    && mkdir -p /var/cache/nginx/fastcgi_temp \
+    && mkdir -p /var/cache/nginx/uwsgi_temp \
+    && mkdir -p /var/cache/nginx/scgi_temp \
+    && chown -R nginx:nginx /var/cache/nginx \
+    && chown -R nginx:nginx /var/log/nginx \
+    && chown -R nginx:nginx /etc/nginx/conf.d \
+    && chown -R nginx:nginx /usr/share/nginx/html \
+    && touch /var/run/nginx.pid \
+    && chown -R nginx:nginx /var/run/nginx.pid
+
+# Switch to non-root user
+USER nginx
+
+# Expose port 8080 (non-root)
+EXPOSE 8080
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
