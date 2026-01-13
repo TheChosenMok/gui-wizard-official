@@ -13,28 +13,17 @@ export default function WizardProgressBar() {
 
   return (
     <div className="mb-8">
-      <div className="flex justify-between items-center mb-2">
+      <div className="flex items-center mb-2">
         {WIZARD_STEPS.map((step, index) => {
           const isCompleted = state.completedSteps.includes(index)
           const isCurrent = state.currentStep === index
           const isClickable = isCompleted || isCurrent
 
           return (
-            <div
-              key={step.id}
-              className="flex-1 relative"
-              onClick={() => isClickable && handleStepClick(index)}
-            >
-              <div className="flex items-center">
-                {index > 0 && (
-                  <div
-                    className={`flex-1 h-1 ${
-                      isCompleted ? 'bg-blue-600' : 'bg-gray-300'
-                    }`}
-                  />
-                )}
+            <div key={step.id} className="flex items-center flex-1">
+              <div className="flex flex-col items-center flex-shrink-0">
                 <div
-                  className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-full text-sm font-medium
+                  className={`flex items-center justify-center w-10 h-10 rounded-full text-sm font-medium relative z-10
                     ${isCurrent
                       ? 'bg-blue-600 text-white ring-4 ring-blue-100'
                       : isCompleted
@@ -43,14 +32,22 @@ export default function WizardProgressBar() {
                     }
                     ${isClickable ? 'cursor-pointer hover:opacity-80' : 'cursor-not-allowed'}
                   `}
+                  onClick={() => isClickable && handleStepClick(index)}
                   title={step.title}
                 >
                   {isCompleted && !isCurrent ? '✓' : index + 1}
                 </div>
+                <div className={`text-xs mt-2 text-center ${isCurrent ? 'font-semibold text-blue-600' : 'text-gray-600'}`}>
+                  {step.title}
+                </div>
               </div>
-              <div className={`text-xs mt-2 text-center ${isCurrent ? 'font-semibold text-blue-600' : 'text-gray-600'}`}>
-                {step.title}
-              </div>
+              {index < WIZARD_STEPS.length - 1 && (
+                <div
+                  className={`flex-1 h-1 -mx-5 relative z-0 ${
+                    isCompleted ? 'bg-blue-600' : 'bg-gray-300'
+                  }`}
+                />
+              )}
             </div>
           )
         })}
