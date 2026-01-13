@@ -146,11 +146,9 @@ export default function ProjectsStep() {
         Add source code repositories (Git or Zip) to clone into your workspace.
       </p>
       
-      <div className="mb-6">
-        <Alert type="info">
-          <strong>Note:</strong> Project definition is optional. If your devfile will be located in the root of the repository, you should omit the projects section and skip this step.
-        </Alert>
-      </div>
+      <Alert type="info" className="mb-6">
+        <strong>Note:</strong> Project definition is optional. If the devfile is located in the root of the repository, it is recommended to omit the 'projects' section and skip this step.
+      </Alert>
 
       <ArrayFieldManager
         items={projects}
