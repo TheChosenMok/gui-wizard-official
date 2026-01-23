@@ -31,7 +31,7 @@ function App() {
         <footer className="bg-white border-t border-gray-200 mt-12">
           <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <p className="text-center text-sm text-gray-500">
-              Learn more about devfiles at{' '}
+            Learn more about devfiles at{' '}
               <a
                 href="https://devfile.io/docs/"
                 target="_blank"
@@ -39,6 +39,17 @@ function App() {
                 className="text-blue-600 hover:text-blue-500"
               >
                 devfile.io/docs
+              </a>
+            </p>
+            <p className="text-center text-sm text-gray-500">
+            Copyright © Devfile a Series of LF Projects, LLC For website terms of use, trademark policy and other project policies please see{' '}
+              <a
+                href="https://lfprojects.org/policies/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-500"
+              >
+                lfprojects.org/policies/.
               </a>
             </p>
           </div>
