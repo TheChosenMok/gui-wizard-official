@@ -15,15 +15,45 @@ export default function CommandsStep() {
     label: c.name
   }))
 
-  const createNewCommand = () => ({
-    id: '',
-    kind: 'exec',
-    exec: {
-      component: '',
-      commandLine: '',
-      workingDir: ''
+  // Helper to determine command type from the property that exists
+  const getCommandType = (command) => {
+    if (command.exec) return 'exec'
+    if (command.apply) return 'apply'
+    if (command.composite) return 'composite'
+    return 'exec' // default
+  }
+
+  const createNewCommand = (type = 'exec') => {
+    const command = { id: '' }
+
+    switch (type) {
+      case 'exec':
+        command.exec = {
+          component: '',
+          commandLine: '',
+          workingDir: ''
+        }
+        break
+      case 'apply':
+        command.apply = {
+          component: ''
+        }
+        break
+      case 'composite':
+        command.composite = {
+          commands: [],
+          parallel: false
+        }
+        break
+      default:
+        command.exec = {
+          component: '',
+          commandLine: ''
+        }
     }
-  })
+
+    return command
+  }
 
   const handleAddCommand = () => {
     dispatch({
@@ -43,14 +73,35 @@ export default function CommandsStep() {
     const command = commands[index]
     let updates = {}
 
-    if (field === 'id' || field === 'kind') {
-      updates = { [field]: value }
+    if (field === 'commandType') {
+      // When changing type, replace the entire command structure
+      const newCommand = createNewCommand(value)
+      newCommand.id = command.id // preserve the id
+      updates = newCommand
+    } else if (field === 'id') {
+      updates = { id: value }
     } else if (field.startsWith('exec.')) {
       const execField = field.split('.')[1]
       updates = {
         exec: {
           ...command.exec,
           [execField]: value
+        }
+      }
+    } else if (field.startsWith('apply.')) {
+      const applyField = field.split('.')[1]
+      updates = {
+        apply: {
+          ...command.apply,
+          [applyField]: value
+        }
+      }
+    } else if (field.startsWith('composite.')) {
+      const compositeField = field.split('.')[1]
+      updates = {
+        composite: {
+          ...command.composite,
+          [compositeField]: value
         }
       }
     }
@@ -62,6 +113,8 @@ export default function CommandsStep() {
   }
 
   const renderCommandItem = (command, index, updateField) => {
+    const commandType = getCommandType(command)
+
     return (
       <div className="space-y-4">
         <FormInput
@@ -75,14 +128,14 @@ export default function CommandsStep() {
         />
 
         <FormSelect
-          name={`command-kind-${index}`}
+          name={`command-type-${index}`}
           label="Command Type"
-          value={command.kind || 'exec'}
-          onChange={(e) => updateField('kind', e.target.value)}
+          value={commandType}
+          onChange={(e) => updateField('commandType', e.target.value)}
           options={COMMAND_TYPES}
         />
 
-        {command.kind === 'exec' && (
+        {commandType === 'exec' && (
           <>
             <FormSelect
               name={`command-component-${index}`}
@@ -114,6 +167,28 @@ export default function CommandsStep() {
               helpText="Working directory for the command"
             />
           </>
+        )}
+
+        {commandType === 'apply' && (
+          <FormSelect
+            name={`command-apply-component-${index}`}
+            label="Component"
+            value={command.apply?.component || ''}
+            onChange={(e) => updateField('apply.component', e.target.value)}
+            options={componentOptions}
+            placeholder="Select a component"
+            required
+            helpText="The component to apply"
+          />
+        )}
+
+        {commandType === 'composite' && (
+          <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
+            <p className="text-sm text-blue-800">
+              Composite commands allow you to execute multiple commands sequentially or in parallel.
+              This feature requires additional implementation.
+            </p>
+          </div>
         )}
       </div>
     )
