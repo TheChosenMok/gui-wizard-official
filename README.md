@@ -295,4 +295,8 @@ This project is open source and available under the [Apache License Version 2.0]
 
 ---
 
+## 📞 Community Support
+
+For issues and questions use the main Devfile [issue tracker](https://github.com/devfile/api/issues)
+
 **Made with ❤️ for the Devfile community**
