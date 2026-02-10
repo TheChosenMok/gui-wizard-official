@@ -31,6 +31,7 @@ components:
         - name: NODE_ENV
           value: development
       memoryLimit: 2Gi
+      cpuRequest: 200m
       cpuLimit: 1000m
   - name: node-modules
     volume:
