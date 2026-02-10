@@ -14,8 +14,6 @@ metadata:
     - tailwind
     - yaml-generator
   website: https://devfile.io
-attributes:
-  controller.devfile.io/storage-type: ephemeral
 components:
   - name: nodejs-dev
     container:
