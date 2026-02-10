@@ -30,7 +30,7 @@ components:
       env:
         - name: NODE_ENV
           value: development
-      memoryLimit: 2Gi
+      memoryLimit: 3Gi
       cpuRequest: 200m
       cpuLimit: 1000m
   - name: node-modules
